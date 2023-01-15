@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:convert="clr-namespace:Shop.Converters"
+             xmlns:prism="http://prismlibrary.com"
+             xmlns:resource="clr-namespace:Shop.Resources.Strings"
+             xmlns:controls ="clr-namespace:Shop.Controls"
+             x:Class="Shop.Views.Detail_Item"
+             BackgroundColor="{DynamicResource HighBackground}">
+
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <convert:ImageByte x:Key="ImageByte"/>
+    </ResourceDictionary>
+  </ContentPage.Resources>
+ 
+
+  <Grid IgnoreSafeArea="True"
+        BackgroundColor="{DynamicResource HighBackground}">
+
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="3.5*"/>
+      <RowDefinition Height="5*"/>
+    </Grid.RowDefinitions>
+
+
+    <Grid Grid.Row="0"
+          HorizontalOptions="Fill"
+          BackgroundColor="{DynamicResource Transparent}">
+
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="1*"/>
+        <ColumnDefinition Width="3*"/>
+        <ColumnDefinition Width="1*"/>
+      </Grid.ColumnDefinitions>
+
+
+      <Button Grid.Column="0"
+                   HorizontalOptions="Start"
+                   VerticalOptions="Center"
+                   CornerRadius="50"
+                   ImageSource="strelka.png"
+                   WidthRequest="55"
+                   HeightRequest="55"
+                   Margin="15,0,0,0"
+                   Scale="0.8"
+                   BackgroundColor="{DynamicResource White}"
+                   Command="{Binding GoBack}"/>
+
+      <Label Grid.Column="1"
+             Text="{Binding TitleText}"
+             FontSize="14"
+             FontFamily="OpenSansBold"
+             TextColor="{DynamicResource Black}"
+             FontAttributes="Bold"
+             BackgroundColor="{DynamicResource Transparent}"
+             HorizontalOptions="Center"
+             VerticalOptions="Center"/>
+
+
+      <Grid Grid.Column="2" Margin="0,0,15,0">
+
+        <Button HorizontalOptions="End"
+                BackgroundColor="{DynamicResource White}"
+                ImageSource="cart.png"
+                CornerRadius="50"
+                HeightRequest="55"
+                Command="{Binding CartClick}"
+                Scale="0.8"
+                VerticalOptions="Center"/>
+
+        <Ellipse IsVisible="{Binding IsCircleCart}"
+                 Fill="Red"
+                 WidthRequest="8"
+                 HeightRequest="8"
+                 HorizontalOptions="End"
+                 VerticalOptions="Start"
+                 Margin="0,20,10,0"/>
+      </Grid>
+
+    </Grid>
+
+
+
+    <CarouselView Grid.Row="1"
+                      Margin="0,5,0,0"
+                      HorizontalOptions="FillAndExpand"
+                      VerticalOptions="FillAndExpand"
+                      ItemsSource="{Binding Item.Photos_Large}"
+                      EmptyView="Empty"
+                      IsScrollAnimated="False"
+                      Loop="False"
+                      PeekAreaInsets="0"
+                      Shadow="{DynamicResource HighBackground}">
+
+      <CarouselView.ItemsLayout>
+        <LinearItemsLayout Orientation="Horizontal"
+                             ItemSpacing="0"
+                             SnapPointsType="MandatorySingle"
+                             SnapPointsAlignment="Center"/>
+      </CarouselView.ItemsLayout>
+
+      <CarouselView.ItemTemplate>
+        <DataTemplate>
+
+          <Image Source="{Binding Image, Converter={StaticResource ImageByte}}"
+             Aspect="Fill"/>
+
+        </DataTemplate>
+      </CarouselView.ItemTemplate>
+    </CarouselView>
+
+
+    <Grid Grid.Row="2"
+          BackgroundColor="{DynamicResource White}">
+
+      <Grid.RowDefinitions>
+        <RowDefinition Height="5*"/>
+        <RowDefinition Height="1.5*"/>
+      </Grid.RowDefinitions>
+
+
+      <VerticalStackLayout Grid.Row="0"
+                         BackgroundColor="{DynamicResource Transparent}"
+                         VerticalOptions="Fill"
+                         HorizontalOptions="FillAndExpand"
+                         Margin="20,10,20,20"
+                         Spacing="7">
+
+        <Label Text="{Binding Item.Brand}"
+                         TextColor="{DynamicResource Gray300}"
+                         HorizontalOptions="Center"
+                         FontSize="16" FontAttributes="Bold"
+                         FontFamily="OpenSansBold"/>
+
+        <Label Text="{Binding IsBestNewText}"
+                         TextColor="{DynamicResource ButtonBlue2}"
+                         HorizontalOptions="Start"
+                         FontSize="14" FontAttributes="Bold"
+                         FontFamily="OpenSansBold"/>
+
+        <Label Text="{Binding Item.Name}"
+                         TextColor="{DynamicResource Black}"
+                         HorizontalOptions="Start"
+                         FontSize="16" FontAttributes="Bold"
+                         FontFamily="OpenSansBold"/>
+
+
+        <Label Text="{Binding Item.Description}"
+                         TextColor="{DynamicResource Gray500}"
+                         HorizontalOptions="Start"
+                         FontSize="14"
+                         FontFamily="OpenSansBold"/>
+
+        <Label Text="{x:Static resource:Resource.Color}"
+                         TextColor="{DynamicResource Black}"
+                         HorizontalOptions="Start"
+                         FontSize="16" FontAttributes="Bold"
+                         FontFamily="OpenSansBold"/>
+
+        <CollectionView x:Name="collectionview"
+                        HorizontalOptions="Start"
+                        ItemsSource="{Binding Item.Color}"
+                        EmptyView="Empty">
+
+          <CollectionView.ItemsLayout>
+            <LinearItemsLayout Orientation="Horizontal"
+                               ItemSpacing="15"
+                               SnapPointsType="None"
+                               SnapPointsAlignment="Center"/>
+          </CollectionView.ItemsLayout>
+
+          <CollectionView.ItemTemplate>
+            <DataTemplate>
+
+              <controls:ButtonForColor
+                      BackgroundColor="{Binding .}"
+                      BorderColor="{DynamicResource Gray100}"
+                      BorderWidth="2"
+                      CornerRadius="25"
+                      WidthRequest="25"
+                      HeightRequest="25"
+                      Command="{Binding BindingContext.ColorBtn,
+                                           Source={x:Reference collectionview}}"
+                      CommandParameter="{Binding .}"/>
+
+            </DataTemplate>
+          </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Label Text="{x:Static resource:Resource.Size}"
+                         TextColor="{DynamicResource Black}"
+                         HorizontalOptions="Start"
+                         FontSize="16" FontAttributes="Bold"
+                         FontFamily="OpenSansBold"/>
+
+
+        <CollectionView x:Name="collectionview2"
+                        HorizontalOptions="Center"
+                        ItemsSource="{Binding Item.Sizes}"
+                        EmptyView="Empty">
+
+          <CollectionView.ItemsLayout>
+            <LinearItemsLayout Orientation="Horizontal"
+                               ItemSpacing="15"
+                               SnapPointsType="None"
+                               SnapPointsAlignment="Center"/>
+          </CollectionView.ItemsLayout>
+
+          <CollectionView.ItemTemplate>
+            <DataTemplate>
+
+              <controls:MyButtonTriger Text="{Binding .}"
+                                 FontSize="12"
+                                 CornerRadius="25"
+                                 TextColor="{DynamicResource Black}"
+                                 BackgroundColor="{DynamicResource Gray100}"
+                                 Command="{Binding BindingContext.SizeBtn,
+                                           Source={x:Reference collectionview2}}"
+                                 CommandParameter="{Binding .}"/>
+
+            </DataTemplate>
+          </CollectionView.ItemTemplate>
+        </CollectionView>
+
+      </VerticalStackLayout>
+
+
+      <Grid Grid.Row="1"
+          VerticalOptions="Start"
+          BackgroundColor="{DynamicResource Transparent}"
+          Margin="0,10,0,0">
+
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="0.5*"/>
+          <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+
+        <Label Grid.Column="0" Margin="35,3,0,0"
+               HorizontalOptions="Start"
+               VerticalOptions="Center"
+               Text="{x:Static resource:Resource.Price}"
+               TextColor="{DynamicResource Gray200}"
+               FontSize="16"
+               FontAttributes="Bold"/>
+
+        <Label Grid.Column="0"
+               HorizontalOptions="End"
+               VerticalOptions="Center"
+               Text="{Binding Item.Price, StringFormat='${0}'}"
+               TextColor="{DynamicResource Black}"
+               FontSize="18"
+               FontAttributes="Bold"
+               FontFamily="OpenSansBold"/>
+
+        <Button Grid.Column="1"
+                CornerRadius="25"
+                HorizontalOptions="Center"
+                FontSize="16"
+                Text="{x:Static resource:Resource.AddToCart}"
+                TextColor="{DynamicResource White}"
+                BackgroundColor="{DynamicResource ButtonBlue2}"
+                Command="{Binding AddToCartClick}"/>
+
+      </Grid>
+
+
+    </Grid>
+
+  </Grid>
+</ContentPage>

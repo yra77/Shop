@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:resource="clr-namespace:Shop.Resources.Strings"
+             xmlns:controls ="clr-namespace:Shop.Controls"
+             xmlns:convert="clr-namespace:Shop.Converters"
+             x:Class="Shop.Views.CartPage"
+             BackgroundColor="{DynamicResource HighBackground}">
+
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <convert:ImageByte x:Key="ImageByte"/>
+    </ResourceDictionary>
+  </ContentPage.Resources>
+
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="1*"/>
+      <RowDefinition Height="5*"/>
+      <RowDefinition Height="2*"/>
+    </Grid.RowDefinitions>
+
+    <Grid Grid.Row="0" HorizontalOptions="Fill">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="1*"/>
+        <ColumnDefinition Width="1*"/>
+        <ColumnDefinition Width="1*"/>
+      </Grid.ColumnDefinitions>
+
+      <Button Grid.Column="0"
+              ImageSource="strelka.png"
+              HorizontalOptions="Start"
+              VerticalOptions="Center"
+              CornerRadius="50"
+              WidthRequest="55"
+              HeightRequest="55"
+              Margin="15,0,0,0"
+              Scale="0.8"
+              BackgroundColor="{DynamicResource White}"
+              Command="{Binding GoBack}"/>
+
+
+      <Label Grid.Column="1"
+             Text="{x:Static resource:Resource.Cart}"
+             FontSize="22" 
+             TextColor="{DynamicResource Black}"
+             FontFamily="OpenSansSemibold"
+             FontAttributes="Bold"
+             VerticalOptions="Center"
+             HorizontalOptions="Center"/>
+
+    </Grid>
+
+    <Grid Grid.Row="1"
+          VerticalOptions="Center">
+
+      <ListView x:Name="listview" 
+                BackgroundColor="{DynamicResource Transparent}"
+                HasUnevenRows="True" 
+                SeparatorColor="{DynamicResource Transparent}" 
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                MaximumHeightRequest="300"
+                SelectionMode="None"
+                ItemsSource="{Binding BuyList}">
+        <ListView.ItemTemplate>
+
+          <DataTemplate>
+
+            <controls:MyViewCell SelectedItemBackgroundColor="{DynamicResource Transparent}">
+              <ViewCell.View>
+
+                <Grid HeightRequest="80"
+                      BackgroundColor="{DynamicResource Transparent}"
+                      Margin="20,0,10,20">
+                  
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="1*"/>
+                  </Grid.ColumnDefinitions>
+
+                  <Frame Grid.Column="0"
+                         Padding="0"
+                         HasShadow="False"
+                         HorizontalOptions="Center"
+                         VerticalOptions="Fill"
+                         CornerRadius="10"
+                         BackgroundColor="{DynamicResource White}">
+
+                    <Image HorizontalOptions="Center"
+                           VerticalOptions="Fill"
+                           BackgroundColor="{DynamicResource White}"
+                           Source="{Binding Product.Photos_Large[0].Image,
+                                     Converter={StaticResource ImageByte}}"
+                           Aspect="Fill"/>
+
+                  </Frame>
+
+                  <Grid Grid.Column="1" Margin="15,0,0,0">
+                    <Grid.RowDefinitions>
+                      <RowDefinition Height="1*"/>
+                      <RowDefinition Height="1*"/>
+                      <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Row="0"
+                           FontFamily="OpenSansSemibold"
+                           VerticalOptions="Start"
+                           HorizontalOptions="Start"
+                           TextColor="{DynamicResource Black}"
+                           Text="{Binding Product.Name}"
+                           FontSize="14"/>
+
+                    <Label Grid.Row="1"
+                           FontFamily="OpenSansSemibold"
+                           HorizontalOptions="Start"
+                           VerticalOptions="Center"
+                           TextColor="{DynamicResource Black}"
+                           Text="{Binding Product.Price, StringFormat='{0}$'}"
+                           FontSize="14"/>
+
+                    <Label Grid.Row="1"
+                           FontFamily="OpenSansSemibold"
+                           Margin="0,0,20,0"
+                           HorizontalOptions="End"
+                           VerticalOptions="Center"
+                           TextColor="{DynamicResource Black}"
+                           Text="{x:Static resource:Resource.Color}"
+                           FontSize="10"/>
+
+                    <Ellipse Grid.Row="1"
+                             Fill="{Binding Color}"
+                             WidthRequest="14"
+                             HeightRequest="14"
+                             HorizontalOptions="End"
+                             VerticalOptions="Center"/>
+
+                    <!--Stepper-->
+
+                    <controls:MyStepper Grid.Row="2"
+                                        MinimumValue="1"
+                                        MaximumValue="{Binding Product.Count}"
+                                        Text="{Binding BuyCount}"
+                                        IsChange="{Binding BindingContext.IsChange,
+                                                           Source={x:Reference listview}}"
+                                        BackgroundColor="{DynamicResource Transparent}"/>
+
+                  </Grid>
+
+                  <Grid Grid.Column="2" HorizontalOptions="Center">
+                    <Grid.RowDefinitions>
+                      <RowDefinition Height="1*"/>
+                      <RowDefinition Height="1*"/>
+                      <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Row="0"
+                           FontFamily="OpenSansSemibold"
+                           HorizontalOptions="Center"
+                           TextColor="{DynamicResource Black}"
+                           VerticalOptions="Start"
+                           Text="{Binding Size, StringFormat='s. {0}'}"
+                           FontSize="14"/>
+
+                    <ImageButton Grid.Row="2"
+                                 Grid.Column="0"
+                                 BackgroundColor="{DynamicResource Transparent}"
+                                 Source="delete.png"
+                                 Command="{Binding BindingContext.DeleteBtn,
+                                                   Source={x:Reference listview}}" 
+                                 CommandParameter="{Binding Id}"/>
+
+                  </Grid>
+                  <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BindingContext.ChoiseItem,
+                                          Source={x:Reference listview}}"
+                                          CommandParameter="{Binding .}"/>
+                  </Grid.GestureRecognizers>
+                </Grid>
+
+              </ViewCell.View>
+            </controls:MyViewCell>
+
+          </DataTemplate>
+        </ListView.ItemTemplate>
+      </ListView>
+
+    </Grid>
+
+    
+    <ActivityIndicator Grid.Row="1"
+                           IsVisible="{Binding IsVisibleIndicator}" 
+                           IsRunning="{Binding IsVisibleIndicator}" 
+                           Color="{DynamicResource ButtonBlue}"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center"/>
+
+    
+    <VerticalStackLayout Grid.Row="2"
+                         BackgroundColor="{DynamicResource White}"
+                         HorizontalOptions="Fill">
+
+      <Grid Margin="20,20,30,30">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="1*"/>
+          <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+
+        <Label HorizontalOptions="Start"
+               Text="{x:Static resource:Resource.Total}"
+               FontSize="14"
+               FontFamily="Montserrat_Font"
+               FontAttributes="Bold"
+               TextColor="{DynamicResource Black}"/>
+
+        <Label Grid.Column="1"
+               Text="{Binding TotalSum, StringFormat='{0} $'}"
+               TextColor="{DynamicResource Black}"
+               HorizontalOptions="End"
+               FontSize="16"
+               FontFamily="OpenSansSemibold"/>
+
+      </Grid>
+
+
+      <Button Text="{x:Static resource:Resource.Apply}"
+              TextColor="{DynamicResource White}"
+              FontFamily="OpenSansSemibold"
+              CornerRadius="50"
+              Margin="20,0,20,0"
+              FontSize="18"
+              BackgroundColor="{Binding Color_OkBtn}"
+              HorizontalOptions="Fill"
+              IsEnabled="False"
+              Command="{Binding ApplyCommand}"/>
+
+    </VerticalStackLayout>
+  </Grid>
+</ContentPage>

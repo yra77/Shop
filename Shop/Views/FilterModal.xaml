@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:resource="clr-namespace:Shop.Resources.Strings"
+             xmlns:controls ="clr-namespace:Shop.Controls"
+             x:Class="Shop.Views.FilterModal"
+             BackgroundColor="{DynamicResource Transparent}">
+
+
+
+  <Grid HorizontalOptions="Fill"
+        VerticalOptions="End"
+        BackgroundColor="{DynamicResource White}">
+
+    <Grid HorizontalOptions="Fill"
+          Margin="20,0,20,0"
+          BackgroundColor="{DynamicResource Transparent}">
+
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="1*"/>
+        <ColumnDefinition Width="1*"/>
+        <ColumnDefinition Width="1*"/>
+      </Grid.ColumnDefinitions>
+
+      <Line Grid.Column="1"
+            Grid.Row="0"
+            VerticalOptions="Start"
+            HorizontalOptions="Center"
+            X1="100" Y1="30" X2="250" Y2="30"
+            StrokeThickness="6"
+            Stroke="{DynamicResource Gray100}"/>
+
+      <Label Grid.Column="1"
+             Grid.Row="1"
+             VerticalOptions="Start"
+             Text="{x:Static resource:Resource.Filters}"
+             TextColor="{DynamicResource Black}"
+             FontSize="20"
+             FontFamily="OpenSansBold"
+             FontAttributes="Bold"
+             HorizontalOptions="Center"/>
+
+
+        <Label Grid.Column="0"
+               Grid.Row="2"
+               VerticalOptions="Start"
+               Text="{x:Static resource:Resource.Brand}"
+               TextColor="{DynamicResource Black}"
+               FontSize="14"
+               Margin="0,0,0,5"
+               FontFamily="OpenSansBold"
+               FontAttributes="Bold"
+               HorizontalOptions="Start"/>
+
+      <CollectionView Grid.ColumnSpan="3"
+                        Grid.Row="3"
+                        VerticalOptions="Center"
+                        x:Name="Colectionview"
+                        ItemsSource="{Binding Brand_s}"
+                        SelectionMode="None"
+                        HorizontalOptions="Center"
+                        Margin="0,0,0,5"
+                        BackgroundColor="{DynamicResource Transparent}">
+
+        <CollectionView.ItemsLayout>
+          <GridItemsLayout Orientation="Vertical"
+                             Span="4"/>
+        </CollectionView.ItemsLayout>
+
+        <CollectionView.ItemTemplate>
+          <DataTemplate>
+
+            <controls:MyButton Text="{Binding .}"
+                               Margin="0.5,0,0.5,0"
+                                 FontFamily="OpenSansRegular"
+                                 FontAttributes="Bold"
+                                 FontSize="12"
+                                 VerticalOptions="Center"
+                                 BackgroundColor="{DynamicResource Gray200}"
+                                 CornerRadius="25" 
+                                 Command="{Binding BindingContext.BrandBtn,
+                                               Source={x:Reference Colectionview}}" 
+                                 CommandParameter="{Binding .}"/>
+
+          </DataTemplate>
+        </CollectionView.ItemTemplate>
+      </CollectionView>
+
+
+      <Label Grid.Column="0"
+               Grid.Row="4"
+               VerticalOptions="Start"
+               Text="{x:Static resource:Resource.Gender}"
+               TextColor="{DynamicResource Black}"
+               FontSize="14"
+               Margin="0,10,0,5"
+               FontFamily="OpenSansBold"
+               FontAttributes="Bold"
+               HorizontalOptions="Start"/>
+
+      <controls:MyButton Grid.Column="0"
+                         Grid.Row="5"
+                         VerticalOptions="Center"
+                         Text="{x:Static resource:Resource.Men}"
+                         TextColor="{DynamicResource White}"
+                         BackgroundColor="{DynamicResource Gray200}" 
+                         FontFamily="OpenSansRegular"
+                         FontAttributes="Bold"
+                         FontSize="12"
+                         CornerRadius="20"
+                         Command="{Binding GendersChoise}"
+                         CommandParameter="men"
+                         Margin="0,0,2,5"/>
+
+      <controls:MyButton Grid.Column="1"
+                         Grid.Row="5"
+                         VerticalOptions="Center"
+                         Text="{x:Static resource:Resource.Women}"
+                         TextColor="{DynamicResource White}"
+                         BackgroundColor="{DynamicResource Gray200}"
+                         FontFamily="OpenSansRegular"
+                         FontAttributes="Bold"
+                         FontSize="12"
+                         CornerRadius="20"
+                         Command="{Binding GendersChoise}"
+                         CommandParameter="women"
+                         Margin="0,0,2,5"/>
+
+      <controls:MyButton Grid.Column="2"
+                         Grid.Row="5"
+                         VerticalOptions="Center"
+                         Text="{x:Static resource:Resource.Uni}"
+                         TextColor="{DynamicResource White}"
+                         BackgroundColor="{DynamicResource Gray200}"
+                         FontFamily="OpenSansRegular"
+                         FontAttributes="Bold"
+                         CornerRadius="20"
+                         FontSize="12"
+                         Command="{Binding GendersChoise}"
+                         CommandParameter="unisex"
+                         Margin="0,0,0,5"/>
+
+
+      <Label Grid.Column="0"
+             Grid.Row="6"
+             VerticalOptions="Start"
+             Text="{x:Static resource:Resource.Size}"
+             TextColor="{DynamicResource Black}"
+             FontSize="14"
+             FontFamily="OpenSansBold"
+             FontAttributes="Bold"
+             HorizontalOptions="Start"
+             Margin="0,10,0,5"/>
+
+      <CollectionView Grid.ColumnSpan="3"
+                      Grid.Row="7"
+                      VerticalOptions="CenterAndExpand"
+                      Margin="0,0,0,10"
+                      x:Name="ColectList"
+                      ItemsSource="{Binding Size_s}"
+                      SelectionMode="None"
+                      HorizontalOptions="Center"                     
+                      BackgroundColor="{DynamicResource Transparent}">
+
+        <CollectionView.ItemsLayout>
+          <GridItemsLayout Orientation="Vertical"
+                             Span="4"
+                             VerticalItemSpacing="3"
+                             HorizontalItemSpacing="5"/>
+        </CollectionView.ItemsLayout>
+
+        <CollectionView.ItemTemplate>
+          <DataTemplate>
+
+            <controls:MyButton Text="{Binding .}"
+                                 TextColor="{DynamicResource White}"
+                                 FontFamily="OpenSansRegular"
+                                 FontAttributes="Bold"
+                                 HeightRequest="35"
+                                 WidthRequest="48"
+                                 FontSize="12"
+                                 VerticalOptions="Center"
+                                 HorizontalOptions="Center"
+                                 BackgroundColor="{DynamicResource Gray200}"
+                                 CornerRadius="25" 
+                                 Command="{Binding BindingContext.SizeBtn,
+                                               Source={x:Reference ColectList}}" 
+                                 CommandParameter="{Binding .}"/>
+
+          </DataTemplate>
+        </CollectionView.ItemTemplate>
+      </CollectionView>
+
+
+        <Label Grid.Column="0"
+               Grid.Row="9"
+               VerticalOptions="Start"
+               Text="{x:Static resource:Resource.Price}"
+               TextColor="{DynamicResource Black}"
+               FontSize="14"
+               FontFamily="OpenSansBold"
+               FontAttributes="Bold"
+               HorizontalOptions="Start"
+               Margin="0,0,0,5"/>
+
+        <controls:RangeSlider Grid.ColumnSpan="3"
+                              Grid.Row="10"
+                              VerticalOptions="End"
+                              MinimumValue="0"
+                              MaximumValue="1000"
+                              TextColor="Black"
+                              StepValue="1"
+                              TextSize="14"
+                              MaterialUI="False"
+                              BarHeight="12"
+                              ShowTextAboveThumbs="True"
+                              ActiveColor="{DynamicResource ButtonBlue2}"
+                              UpperValue="{Binding MaxPrice}"
+                              TextFormat="0$"
+                              LowerValue="{Binding MinPrice}"/>
+
+
+      <Button Grid.ColumnSpan="3"
+              Grid.Row="11"
+              VerticalOptions="Start"
+              Text="{x:Static resource:Resource.Apply}"
+              TextColor="{DynamicResource White}"
+              BackgroundColor="{DynamicResource ButtonBlue2}"
+              FontFamily="OpenSansSemibold"
+              FontSize="18"
+              CornerRadius="50"
+              Margin="0,30,0,40"
+              HorizontalOptions="Fill"
+              Command="{Binding ApplyCommand}"/>
+
+      <Grid.GestureRecognizers>
+        <TapGestureRecognizer Command="{Binding ApplyCommand}"/>
+      </Grid.GestureRecognizers>
+    </Grid>
+  </Grid>
+</ContentPage>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:convert="clr-namespace:Shop.Converters"
+             xmlns:prism="http://prismlibrary.com"
+             xmlns:resource="clr-namespace:Shop.Resources.Strings"
+             xmlns:controls ="clr-namespace:Shop.Controls"
+             x:Class="Shop.Views.Account"
+             BackgroundColor="{DynamicResource HighBackground}">
+
+  <Grid>
+
+    <!-- Base Content -->
+  <Grid Grid.Row="0"
+        HorizontalOptions="Fill"
+        VerticalOptions="FillAndExpand"
+        BackgroundColor="{DynamicResource Transparent}">
+
+    <Grid.RowDefinitions>
+      <RowDefinition Height="1*"/>
+      <RowDefinition Height="4*"/>
+      <RowDefinition Height="4*"/>
+    </Grid.RowDefinitions>
+    
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="1*"/>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="1*"/>
+    </Grid.ColumnDefinitions>
+
+
+           <Button Grid.Column="0"
+                   Grid.Row="0"
+                   HorizontalOptions="Start"
+                   VerticalOptions="Center"
+                   CornerRadius="50"
+                   ImageSource="strelka.png"
+                   WidthRequest="55"
+                   HeightRequest="55"
+                   Margin="15,0,0,0"
+                   Scale="0.8"
+                   BackgroundColor="{DynamicResource White}"
+                   Command="{Binding GoBack}"/>
+    
+
+    <Label Grid.Column="1"
+           Grid.Row="0"
+             Text="{x:Static resource:Resource.AccountSettings}"
+             FontSize="14"
+             FontFamily="OpenSansBold"
+             TextColor="{DynamicResource Black}"
+             FontAttributes="Bold"
+             BackgroundColor="{DynamicResource Transparent}"
+             HorizontalOptions="Center"
+             VerticalOptions="Center"
+           Margin="10,0,0,0"/>
+
+
+    <VerticalStackLayout Grid.Row="1"
+                           Grid.ColumnSpan="3"
+                           Margin="20"
+                           Spacing="20">
+
+        <Label Text="{x:Static resource:Resource.Account}"
+               TextColor="{DynamicResource Black}"
+               HorizontalOptions="Center"
+               FontSize="16"
+               FontAttributes="Bold"
+               FontFamily="OpenSansBold"/>
+
+      
+        <Label Text="{x:Static resource:Resource.Account}"
+             TextColor="{DynamicResource Gray400}"
+             FontSize="14"
+             FontAttributes="Bold"
+             FontFamily="OpenSansBold"
+             HorizontalOptions="Start">
+          <Label.GestureRecognizers>
+            <TapGestureRecognizer Command="{Binding PassEmail}"/>
+          </Label.GestureRecognizers>
+        </Label>
+
+      
+        <Label Text="{x:Static resource:Resource.DeleteAccount}"
+             TextColor="{DynamicResource Gray400}"
+             FontSize="14"
+             FontAttributes="Bold"
+             FontFamily="OpenSansBold"
+             HorizontalOptions="Start">
+          <Label.GestureRecognizers>
+            <TapGestureRecognizer Command="{Binding DeleteAccount}"/>
+          </Label.GestureRecognizers>
+        </Label>
+
+      
+      </VerticalStackLayout>
+
+
+      <VerticalStackLayout Grid.Row="2"
+                           Grid.ColumnSpan="3"
+                           Margin="20"
+                           Spacing="20">
+
+
+        <Label Text="{x:Static resource:Resource.Settings}"
+               TextColor="{DynamicResource Black}"
+               HorizontalOptions="Center"
+               FontSize="16"
+               FontAttributes="Bold"
+               FontFamily="OpenSansBold"/>
+
+
+      </VerticalStackLayout>
+
+
+    </Grid>
+    <!-- End Base Content -->
+
+  </Grid>
+
+</ContentPage>

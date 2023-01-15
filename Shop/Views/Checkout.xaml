@@ -1,0 +1,568 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:resource="clr-namespace:Shop.Resources.Strings"
+             xmlns:controls ="clr-namespace:Shop.Controls.Map"
+             xmlns:control ="clr-namespace:Shop.Controls"
+             x:Class="Shop.Views.Checkout"
+             BackgroundColor="{DynamicResource HighBackground}">
+
+  <Grid>
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="1*"/>
+      <RowDefinition Height="5*"/>
+      <RowDefinition Height="2*"/>
+    </Grid.RowDefinitions>
+
+    <Grid Grid.Row="0" HorizontalOptions="Fill">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="1*"/>
+        <ColumnDefinition Width="2*"/>
+        <ColumnDefinition Width="1*"/>
+      </Grid.ColumnDefinitions>
+
+      <Button Grid.Column="0"
+              HorizontalOptions="Start"
+              VerticalOptions="Center"
+              CornerRadius="50"
+              ImageSource="strelka.png"
+              WidthRequest="50"
+              HeightRequest="50"
+              Margin="15,0,0,0"
+              Scale="0.8"
+              BackgroundColor="{DynamicResource White}"
+              Command="{Binding GoBack}"/>
+
+      <Label Grid.Column="1"
+             Text="{x:Static resource:Resource.Checkout}"
+             FontSize="22" 
+             TextColor="{DynamicResource Black}"
+             FontFamily="OpenSansSemibold"
+             VerticalOptions="Center"
+             HorizontalOptions="Center"
+             FontAttributes="Bold"/>
+
+    </Grid>
+
+
+    <Grid Grid.Row="1"
+          BackgroundColor="{DynamicResource White}"
+          Margin="20,0,20,20"
+          VerticalOptions="FillAndExpand">
+      
+      <ScrollView>
+        
+      <VerticalStackLayout BackgroundColor="{DynamicResource Transparent}"
+                           Margin="10"
+                           Spacing="10"
+                           VerticalOptions="FillAndExpand">
+       
+      <Label Text="{x:Static resource:Resource.Contact}"
+             TextColor="{DynamicResource Black}"
+             FontSize="14"
+             FontFamily="OpenSansSemibold"
+             HorizontalOptions="Start"
+             FontAttributes="Bold"/>
+
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="1*"/>
+          </Grid.ColumnDefinitions>
+
+          <Frame Grid.Column="0"
+                 BackgroundColor="{DynamicResource HighBackground}"
+                 CornerRadius="7"
+                 VerticalOptions="Center"
+                 HorizontalOptions="Center"
+                 WidthRequest="35"
+                 HeightRequest="35">
+            
+            <Image Source="message.svg"
+                   Aspect="Center"
+                   WidthRequest="20"
+                   HeightRequest="20" 
+                   BackgroundColor="{DynamicResource Transparent}"/>
+            
+          </Frame>
+
+          <Label Grid.Column="1"
+                 Text="{Binding Email}"
+                 TextColor="{DynamicResource Black}"
+                 FontSize="10"
+                 FontFamily="OpenSansSemibold"
+                 HorizontalOptions="Start"
+                 VerticalOptions="Center"
+                 Margin="10,0,0,0"/>
+
+          <ImageButton Grid.Column="2"
+                       Source="edit.png"
+                       BackgroundColor="{DynamicResource Transparent}"
+                       Aspect="Center"
+                       Scale="0.8"
+                       Command="{Binding EditBtn}"
+                       CommandParameter="email"/>
+
+        </Grid>
+
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="1*"/>
+          </Grid.ColumnDefinitions>
+
+          <Frame Grid.Column="0"
+                 BackgroundColor="{DynamicResource HighBackground}"
+                 CornerRadius="7"
+                 VerticalOptions="Center"
+                 WidthRequest="35"
+                 HeightRequest="35" >
+
+            <Image Source="tel.svg"
+                   Aspect="Center"
+                   WidthRequest="20"
+                   HeightRequest="20" 
+                   BackgroundColor="{DynamicResource Transparent}"/>
+
+          </Frame>
+
+          <Label Grid.Column="1"
+                 Text="{Binding Tel}"
+                 TextColor="{DynamicResource Black}"
+                 FontSize="12"
+                 FontFamily="OpenSansSemibold"
+                 HorizontalOptions="Start"
+                 VerticalOptions="Center"
+                 Margin="10,0,0,0"/>
+
+          <ImageButton Grid.Column="2"
+                       Source="edit.png"
+                       BackgroundColor="{DynamicResource Transparent}"
+                       Aspect="Center"
+                       Scale="0.8"
+                       Command="{Binding EditBtn}"
+                       CommandParameter="tel"/>
+
+        </Grid>
+
+
+            <Grid HorizontalOptions="Start" Margin="5,0,0,0">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="5*"/>
+              </Grid.ColumnDefinitions>
+
+              <Frame Grid.Column="0"
+                     BackgroundColor="{DynamicResource HighBackground}"
+                     CornerRadius="7"
+                     VerticalOptions="Center"
+                     WidthRequest="35"
+                     HeightRequest="35">
+
+                <Image Source="ic_card.png"
+                       Aspect="Center"
+                       WidthRequest="20"
+                       HeightRequest="20" 
+                       BackgroundColor="{DynamicResource Transparent}"/>
+
+              </Frame>
+
+              <Label Grid.Column="1"
+                     BackgroundColor="{DynamicResource Transparent}"
+                     Text="{x:Static resource:Resource.PaymentInfo}"
+                     TextColor="{DynamicResource Black}"
+                     FontSize="14"
+                     FontFamily="OpenSansSemiBold"
+                     VerticalOptions="Center"
+                     HorizontalOptions="Start"
+                     Margin="10,0,0,0"/>
+
+              <Grid.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding CardEdit}"/>
+              </Grid.GestureRecognizers>
+            </Grid>
+
+
+
+            <Grid Margin="0,10,0,0">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="1*"/>
+          </Grid.ColumnDefinitions>
+
+          <Label Grid.Column="0"
+                 Text="{x:Static resource:Resource.Address}"
+                 TextColor="{DynamicResource Black}"
+                 FontSize="14"
+                 FontFamily="OpenSansSemibold"
+                 HorizontalOptions="Start"
+                 FontAttributes="Bold"/>
+
+          <Label Grid.Column="1"
+                 Text="{Binding Address}"
+                 TextColor="{DynamicResource Black}"
+                 FontSize="12"
+                 FontFamily="OpenSansSemibold"
+                 HorizontalOptions="StartAndExpand"
+                 VerticalOptions="Center"
+                 Margin="10,0,0,0"
+                 MaxLines="6"/>
+
+          <!--<ImageButton Grid.Column="2" Source="edit.png" BackgroundColor="{DynamicResource Transparent}"
+                 Aspect="Center" Scale="0.8"/>-->
+
+        </Grid>
+
+        <Grid VerticalOptions="FillAndExpand"
+              HeightRequest="180">
+
+          <controls:Map MapType="Street"
+                      IsShowingUser="True"
+                      Address="{Binding MapAddress, Mode=TwoWay}"
+                      VerticalOptions="Fill"
+                      HorizontalOptions="Center"/>
+
+        </Grid>
+
+
+           
+
+            <VerticalStackLayout.GestureRecognizers>
+              <TapGestureRecognizer Command="{Binding UnfocusedCommand}"/>
+      </VerticalStackLayout.GestureRecognizers>
+    </VerticalStackLayout>
+      </ScrollView>
+    </Grid>
+
+
+      <ActivityIndicator Grid.Row="1"
+                           IsVisible="{Binding IsVisibleIndicator}" 
+                           IsRunning="{Binding IsVisibleIndicator}" 
+                           Color="{DynamicResource ButtonBlue}"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center"/>
+
+
+      <VerticalStackLayout Grid.Row="2" BackgroundColor="{DynamicResource White}"
+                         HorizontalOptions="Fill">
+
+      <Grid Margin="20,20,30,30">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="1*"/>
+          <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+        <Label HorizontalOptions="Start"
+               Text="{x:Static resource:Resource.Total}"
+               FontSize="14"
+               FontFamily="Montserrat_Font"
+               FontAttributes="Bold"
+               TextColor="{DynamicResource Black}"/>
+
+        <Label Grid.Column="1"
+               Text="{Binding TotalSum, StringFormat='${0}'}"
+               TextColor="{DynamicResource Black}"
+               HorizontalOptions="End"
+               FontSize="16"
+               FontFamily="OpenSansSemibold"/>
+
+      </Grid>
+
+
+      <Button Text="{x:Static resource:Resource.Confirm}"
+              TextColor="{DynamicResource White}"
+              FontFamily="OpenSansSemibold"
+              CornerRadius="50"
+              Margin="20,0,20,0"
+              FontSize="18"
+              BackgroundColor="{Binding Color_OkBtn}"
+              HorizontalOptions="Fill"
+              IsEnabled="False"
+              Command="{Binding ConfirmCommand}"/>
+
+      <VerticalStackLayout.GestureRecognizers>
+        <TapGestureRecognizer Command="{Binding UnfocusedCommand}"/>
+      </VerticalStackLayout.GestureRecognizers>
+    </VerticalStackLayout>
+
+    
+    <Grid.GestureRecognizers>
+      <TapGestureRecognizer Command="{Binding UnfocusedCommand}"/>
+    </Grid.GestureRecognizers>
+  </Grid>
+
+    
+    <!-- Pay card Content -->
+
+    <Grid TranslationY="{Binding TraslateY}"
+          Scale="{Binding ScalePayCard}"
+          IsVisible="{Binding IsCardVisible}"
+          Margin="10,0,10,0"
+          VerticalOptions="FillAndExpand"
+          RowSpacing="20">
+
+      <Grid.RowDefinitions>
+        <RowDefinition Height="1*"/>
+        <RowDefinition Height="1*"/>
+      </Grid.RowDefinitions>
+
+
+      <Border Grid.Row="0"
+              BackgroundColor="{DynamicResource HamburgerBackground}"
+              HorizontalOptions="Fill"
+              VerticalOptions="End"
+              HeightRequest="220"
+              StrokeShape="RoundRectangle 10,10,10,10">
+        <Border.Shadow>
+          <Shadow Brush="{DynamicResource Gray600}" Radius="10" Offset="4,8"/>
+        </Border.Shadow>
+
+        <Grid Margin="15,10,0,0">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="1*"/>
+          </Grid.RowDefinitions>
+
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+          </Grid.ColumnDefinitions>
+
+          <Image Grid.Column="3"
+                 Grid.Row="0"
+                 Source="icon_chip.png"
+                 BackgroundColor="{DynamicResource Transparent}"
+                 VerticalOptions="End"
+                 HorizontalOptions="End"
+                 Scale="0.8"
+                 Aspect="Fill"/>
+
+          <Label Grid.Row="1"
+                 Grid.Column="0"
+                 Grid.ColumnSpan="2"
+                 FontSize="10"
+                 Text="Card Number"
+                 VerticalOptions="End"
+                 TextColor="{DynamicResource Gray100}"/>
+
+          <Entry Grid.Row="2"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="4"
+                            VerticalOptions="Start"
+                            HorizontalOptions="Center"
+                            Margin="0,0,15,0"
+                            Keyboard="Numeric"
+                            FontSize="22"
+                            Text="{Binding CardNum}"
+                            TextColor="{DynamicResource White}"
+                            Placeholder="0000 0000 0000 0000"
+                            MaxLength="19"
+                            CharacterSpacing="2"
+                            PlaceholderColor="{DynamicResource Yellow200Accent}"
+                            BackgroundColor="{DynamicResource Transparent}"/>
+
+          <Label Grid.Row="3"
+                 Grid.Column="0"
+                 VerticalOptions="End"
+                 FontSize="10"
+                 Text="Date"
+                 TextColor="{DynamicResource Gray100}"/>
+
+          <Entry Grid.Row="4"
+                            Grid.Column="0"
+                            VerticalOptions="Start"
+                            Keyboard="Numeric"
+                            MaxLength="5"
+                            CharacterSpacing="2"
+                            FontSize="16"
+                            Text="{Binding CardDate}"
+                            TextColor="{DynamicResource White}"
+                            Placeholder="00/00"
+                            PlaceholderColor="{DynamicResource Gray400}"
+                            BackgroundColor="{DynamicResource Transparent}"/>
+
+          <Label Grid.Row="3"
+                 Grid.Column="3"
+                 HorizontalOptions="Start"
+                 VerticalOptions="End"
+                 FontSize="10"
+                 Text="Cvv"
+                 TextColor="{DynamicResource Gray100}"/>
+
+          <Entry Grid.Row="4"
+                 Grid.Column="3"
+                 HorizontalOptions="Start"
+                 VerticalOptions="Start"
+                 MaxLength="3"
+                 Keyboard="Numeric"
+                 CharacterSpacing="1"
+                 FontSize="16"
+                 Text="{Binding CardCvv}"
+                 TextColor="{DynamicResource White}"
+                 Placeholder="000"
+                 PlaceholderColor="{DynamicResource Gray400}"
+                 BackgroundColor="{DynamicResource Transparent}"/>
+
+          <Image Grid.Column="0"
+                 Grid.Row="0"
+                 Source="{Binding CardNum, Converter={StaticResource CardNumberToImageConverter}}"
+                 BackgroundColor="{DynamicResource Transparent}"
+                 VerticalOptions="Start"
+                 HorizontalOptions="Center"
+                 Scale="0.8"
+                 Margin="0,5,0,0"
+                 Aspect="Fill"/>
+
+        </Grid>
+      </Border>
+
+      <!--<Button Grid.Row="1"
+              CornerRadius="10"
+              VerticalOptions="Start"
+              HorizontalOptions="Fill"
+              BackgroundColor="{Binding Color_OkBtn}"
+              TextColor="{DynamicResource White}"
+              FontFamily="OpenSansBold"
+              FontAttributes="Bold"
+              FontSize="16"
+              Text="{x:Static resource:Resource.Confirm}"
+              IsEnabled="False"
+              Command="{Binding ConfirmCommand}"/>-->
+
+      <Grid.GestureRecognizers>
+        <TapGestureRecognizer Command="{Binding CardEdit}"/>
+      </Grid.GestureRecognizers>
+    </Grid>
+
+    <!-- End Pay card Content -->
+
+
+    <!--Edit-->
+    <Grid VerticalOptions="Fill"
+          HorizontalOptions="FillAndExpand"
+          IsVisible="{Binding IsVisibleEdit}"
+          BackgroundColor="{DynamicResource Transparent}"
+          Scale="{Binding ScaleEdit}">
+
+      <Grid VerticalOptions="Center"
+            HorizontalOptions="Fill"
+            BackgroundColor="{DynamicResource HamburgerBackground}"
+            Margin="20,0,20,0">
+        
+        <Grid.RowDefinitions>
+          <RowDefinition Height ="1*"/>
+          <RowDefinition Height ="1*"/>
+          <RowDefinition Height ="1*"/>
+        </Grid.RowDefinitions>
+
+        <StackLayout Grid.Row="0"
+                     HorizontalOptions="Fill"
+                     Margin="20,30,20,20">
+          
+          <Frame Padding="{OnPlatform Android='10,0,10,0', iOS='10,8,10,8'}"
+                 HasShadow="False"
+                 CornerRadius="50"
+                 BorderColor="{Binding EditBorderColor}"
+                 BackgroundColor="{DynamicResource White}">
+
+            <control:MyEntry Text="{Binding Edit_Str}"
+                             Margin="15,0,0,0"
+                             BackgroundColor="{DynamicResource Transparent}"
+                             FontSize="16"
+                             FontFamily="OpenSansRegular"
+                             ReturnType="Done"/>
+
+          </Frame>
+
+          <Label Text="{Binding ErrorEditText}"
+                 FontSize="11"
+                 HorizontalOptions="Center" 
+                 TextColor="{Binding EditBorderColor}"/>
+
+        </StackLayout>
+
+        <Button Grid.Row="1"
+                Text="Ok"
+                VerticalOptions="Center"
+                Margin="20,30,20,0"
+                CornerRadius="20"
+                Command="{Binding OkCancelEdit}"
+                CommandParameter="ok"/>
+
+        <Button Grid.Row="2"
+                Text="Cancel"
+                VerticalOptions="Center"
+                Margin="20,10,20,20"
+                CornerRadius="20"
+                Command="{Binding OkCancelEdit}"
+                CommandParameter="cancel"/>
+
+        <Grid.GestureRecognizers>
+          <TapGestureRecognizer Command="{Binding UnfocusedCommand}"/>
+        </Grid.GestureRecognizers>
+      </Grid>
+
+      <Grid.GestureRecognizers>
+        <TapGestureRecognizer Command="{Binding UnfocusedCommand}"/>
+      </Grid.GestureRecognizers>
+    </Grid>
+    <!--End Edit-->
+
+    <!--Complite-->
+    <Grid VerticalOptions="Fill"
+          HorizontalOptions="FillAndExpand"
+          IsVisible="{Binding IsVisibleComplete}"
+          BackgroundColor="{DynamicResource Transparent}"
+          Scale="{Binding ScaleEdit}">
+
+      <Grid VerticalOptions="Center"
+            HorizontalOptions="Fill"
+            BackgroundColor="{DynamicResource HamburgerBackground}"
+            Margin="20,0,20,0">
+        
+        <Grid.RowDefinitions>
+          <RowDefinition Height ="2*"/>
+          <RowDefinition Height ="1*"/>
+          <RowDefinition Height ="1*"/>
+        </Grid.RowDefinitions>
+
+        <Image Grid.Row="0"
+               Source="success.png"
+               VerticalOptions="Center"
+               HorizontalOptions="Center"
+               Aspect="Center"
+               Margin="0,15,0,20"
+               BackgroundColor="{DynamicResource Transparent}"/>
+
+      <Label Grid.Row="1"
+             TextColor="{DynamicResource White}"
+             FontSize="18"
+             HorizontalOptions="Center"
+             FontAttributes="Bold"
+             FontFamily="OpenSansRegular"
+             Text="{x:Static resource:Resource.IsComplete}"/>
+
+      <Button Grid.Row="2"
+              Text="{x:Static resource:Resource.BackToShopping}"
+              VerticalOptions="Center"
+              Margin="20,30,20,20"
+              CornerRadius="20"
+              Command="{Binding Complite}"/>
+
+       </Grid>
+    </Grid>
+    <!--End Edit-->
+    
+  </Grid>
+</ContentPage>
