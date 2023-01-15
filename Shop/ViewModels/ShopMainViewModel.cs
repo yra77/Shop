@@ -129,6 +129,7 @@ namespace Shop.ViewModels
             set => SetProperty(ref _productListNew, value);
         }
 
+
         public DelegateCommand UnfocusedCommand => new DelegateCommand(Unfocused_Entry);
         public DelegateCommand SeeAllCommand => new DelegateCommand(Go_SeeAllAsync);
         public DelegateCommand HamburgerClick => new DelegateCommand(Hamburger_Click);
@@ -137,9 +138,9 @@ namespace Shop.ViewModels
         public DelegateCommand<object> ChoiseItem => new DelegateCommand<object>(ChoiseItem_ClickAsync);
         public DelegateCommand<object> AddFavoritBtn => new DelegateCommand<object>(AddFavorit_Click);
         public DelegateCommand ButtonSearch => new DelegateCommand(ButtonSearch_ClickAsync);
-        public DelegateCommand PhotoEdit => new DelegateCommand(TakePhoto);
         public DelegateCommand FavoritClick => new DelegateCommand(Favorit_ClickAsync);
         public DelegateCommand Account => new DelegateCommand(AccountClick);
+
 
         #endregion
 
@@ -295,23 +296,6 @@ namespace Shop.ViewModels
                 ProductListNew = new ObservableCollection<ProductWithList>(_staticList.AsParallel().Where(m => m.IsNew == true));
           
             IsVisibleIndicator = false;
-        }
-
-        public async void TakePhoto()
-        {
-            //var photo = await MediaPhoto.TakePhoto();
-
-            //if (photo != null && photo.Length > 0)
-            //{
-            //    PhotoPath = photo;
-
-            //    _login.ImageAccount = photo;
-
-            //    if(!await _auth.UpdateAsync(_login))
-            //    {
-            //        _printMessage.ViewMessage(Resources.Strings.Resource.SaveError);
-            //    }
-            //}
         }
 
         private void CreateFavorite()

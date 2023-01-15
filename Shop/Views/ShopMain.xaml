@@ -49,7 +49,6 @@
                BackgroundColor="{DynamicResource Transparent}">
           
         <ImageButton Aspect="Fill"
-                     Command="{Binding PhotoEdit}"
                      Source="{Binding PhotoPath, Converter={StaticResource ImageByte}}"/>
 
         </Frame>
