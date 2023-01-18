@@ -2,9 +2,8 @@
 
 using Shop.Models;
 using Shop.Services.HttpService;
-using Shop.Services.Repository;
-using Shop.Services.SettingsManager;
 using Shop.Services.VerifyService;
+using Shop.Services.SettingsManager;
 
 
 namespace Shop.Services.Auth
@@ -12,57 +11,61 @@ namespace Shop.Services.Auth
     internal class Auth : IAuth
     {
 
-        private readonly IRepository _repository;
+
         private readonly IRestService _restService;
         private readonly IVerifyInputService _verifyInput;
         private readonly ISettingsManager _settingsManager;
 
 
-        public Auth(IRepository repository,
-                    IRestService restService,
+        public Auth(IRestService restService,
                     ISettingsManager settingsManager,
                     IVerifyInputService verifyInputService)
         {
             _verifyInput = verifyInputService;
             _settingsManager = settingsManager;
             _restService = restService;
-            _repository = repository;
         }
 
 
         public async Task<(bool, (string, Login))> AuthAsync(string password, string email)
         {
+
             string str = null;
+
 
             if (_verifyInput.IsValidEmail(email))
             {
+
                 if (_verifyInput.PasswordVerify(password))
                 {
+
                     Login res = new Login();
-
-                    res = await _restService.GetDataAsync<Login>("Email", email);
-
-                    if (res == null)
+                    try
                     {
-                        res = (await _repository.GetDataAsync<Login>("Login", "Email", email)).FirstOrDefault();
-                    }
+                        res = await _restService.GetDataAsync<Login>("Email", email);
 
-                    if (res != null)
-                    {
-                        if (res.Password == password)
+                        if (res != null)
                         {
-                            _settingsManager.IsCircleCart = (res.CartStatus > 0);
-                            return (true, (str, res));
+
+                            if (res.Password == password)
+                            {
+                                _settingsManager.IsCircleCart = (res.CartStatus > 0);
+                                return (true, (str, res));
+                            }
+                            else
+                            {
+                                str = Resources.Strings.Resource.Alert_Password1;
+                            }
                         }
                         else
                         {
-                            str = Resources.Strings.Resource.Alert_Password1;
+                            str = Resources.Strings.Resource.Alert_Email2;
                         }
                     }
-                    else
+                    catch
                     {
-                        str = Resources.Strings.Resource.Alert_Email2;
-                    }
+                        str = Resources.Strings.Resource.NotServer;
+                    }        
                 }
                 else
                 {
@@ -77,30 +80,42 @@ namespace Shop.Services.Auth
             return (false, (str, null));
         }
 
+
         public async Task<(bool, string)> RegistrAsync(Login profile)
         {
 
             string str = null;
 
+
             if (_verifyInput.IsValidEmail(profile.Email))
             {
-                if (profile.Name.Length > 2
-                    && _verifyInput.PasswordVerify(profile.Password))
+
+                if (profile.Name.Length > 2 && _verifyInput.PasswordVerify(profile.Password))
                 {
 
-                    if (await InsertAsync(profile))
+                    try
                     {
-                        _settingsManager.Name = profile.Name;
-                        _settingsManager.Email = profile.Email;
-                        _settingsManager.Password = profile.Password;
-                        _settingsManager.Tel = profile.Tel;
-                        _settingsManager.Address = profile.Address;
-                        _settingsManager.IsCircleCart = (profile.CartStatus > 0);
-                        return (true, str);
+
+                        var res = await _restService.GetDataAsync<Login>("Email", profile.Email);
+
+                        if (res == null && await _restService.InsertAsync<Login>(profile))
+                        {
+                            _settingsManager.Name = profile.Name;
+                            _settingsManager.Email = profile.Email;
+                            _settingsManager.Password = profile.Password;
+                            _settingsManager.Tel = profile.Tel;
+                            _settingsManager.Address = profile.Address;
+                            _settingsManager.IsCircleCart = (profile.CartStatus > 0);
+                            return (true, str);
+                        }
+                        else
+                        {
+                            str = Resources.Strings.Resource.Alert_Email1;
+                        }
                     }
-                    else
+                    catch
                     {
-                        str = Resources.Strings.Resource.Alert_Email1;
+                        str = Resources.Strings.Resource.NotServer;
                     }
                 }
                 else
@@ -126,8 +141,7 @@ namespace Shop.Services.Auth
                 {
                     res = log;
 
-                    return (await _restService.UpdateDataAsync(res.Id, res)
-                            && await _repository.UpdateAsync(res));
+                    return await _restService.UpdateDataAsync(res.Id, res);
                 }
             }
             catch (Exception e)
@@ -137,24 +151,23 @@ namespace Shop.Services.Auth
             return false;
         }
 
-        private async Task<bool> InsertAsync(Login profile)
-        {
-            var res = await _restService.GetDataAsync<Login>("Email", profile.Email);
-            var resLocal = (await _repository.GetDataAsync<Login>("Login", "Email", profile.Email));
+        //private async Task<bool> InsertAsync(Login profile)
+        //{
+        //    try
+        //    {
+        //        var res = await _restService.GetDataAsync<Login>("Email", profile.Email);
 
-            if (res == null && await _restService.InsertAsync<Login>(profile))
-            {
-                var resNew = await _restService.GetDataAsync<Login>("Email", profile.Email);
+        //        if (res == null && await _restService.InsertAsync<Login>(profile))
+        //        {
+        //            return true;
+        //        }
+        //    }
+        //    catch
+        //    {
 
-                if (!resLocal.Any() && resNew != null
-                    && await _repository.InsertAsync<Login>(resNew))
-                {
-                    return true;
-                }
-            }
-
-                return false;
-        }
+        //    }
+        //        return false;
+        //}
 
     }
 }

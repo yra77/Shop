@@ -228,6 +228,9 @@
   <data name="New" xml:space="preserve">
     <value>Новинки</value>
   </data>
+  <data name="NotServer" xml:space="preserve">
+    <value>Сервер недоступний</value>
+  </data>
   <data name="Offline" xml:space="preserve">
     <value>Ви офлайн. Увімкніть доступ до Інтернету.</value>
   </data>

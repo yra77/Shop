@@ -70,7 +70,7 @@
                            VerticalOptions="Start"
                            Spacing="15">
 
-        <Button Text="{x:Static resource:Resource.Account}"
+        <Button Text="Account"
                 CharacterSpacing="2"
                 FontFamily="OpenSansBold"
                 FontSize="14"

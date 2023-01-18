@@ -5,7 +5,6 @@ using Shop.Services.VerifyService;
 using Shop.Services.Db_Products;
 using Shop.Services.HttpService;
 using Shop.Services.Interfaces;
-using Shop.Services.Repository;
 using Shop.Services.SendEmail;
 using Shop.Services.Db_Cart;
 using Shop.Services.Auth;
@@ -44,7 +43,6 @@ internal static class PrismStartup
          containerRegistry.RegisterSingleton<IVerifyInputService, VerifyInputService>()
                           .RegisterSingleton<ISettingsManager, SettingsManager>()
                           .RegisterSingleton<ISendEmail, SendEmail>()
-                          .RegisterSingleton<IRepository, Repository>()
                           .RegisterSingleton<IAuth, Auth>()
                           .RegisterSingleton<IProducts, Products>()
                           .RegisterSingleton<ICart, Carts>()

@@ -87,7 +87,7 @@ namespace Shop.ViewModels
         {
             Unfocused_Entry();
 
-            if (_email != null)
+            if (_email != null && _stateNethwork)
             {
                 _sendEmail.SendPasswordAsync(Email);
                 await _navigationService.NavigateAsync("MainPage");
@@ -123,8 +123,9 @@ namespace Shop.ViewModels
 
         private bool IsOkEnable()//Enable disable "Sign in" Button
         {
-            IsEnabled = (EmailBorderColor == Color.Parse("White")
-                    && _email.Length > 0)
+            IsEnabled = (_stateNethwork
+                         && EmailBorderColor == Color.Parse("White")
+                         && _email.Length > 0)
                 ? IsEnabled = true : IsEnabled = false;
 
             if (IsEnabled)

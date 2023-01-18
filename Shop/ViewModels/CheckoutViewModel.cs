@@ -465,7 +465,7 @@ namespace Shop.ViewModels
 
         private bool IsСonfirmEnable()//Enable disable "Apply" Button
         {
-            if(!_isPressed
+            if(!_isPressed && _stateNethwork
                && BuyList != null && BuyList.Count > 0
                && TotalSum != null && TotalSum.Length > 0
                && Email != null

@@ -1,12 +1,13 @@
 ﻿
 
 using Shop.Models;
+using Shop.Services.Auth;
 using Shop.Services.Interfaces;
 using Shop.Services.Db_Products;
 using Shop.Services.SettingsManager;
+
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using Shop.Services.Auth;
 
 
 namespace Shop.ViewModels
@@ -118,7 +119,7 @@ namespace Shop.ViewModels
 
         private async void ChoiseItem_ClickAsync(object obj)
         {
-            if (!_isPressed)
+            if (!_isPressed && _stateNethwork)
             {
                 _isPressed = true;
 
@@ -136,19 +137,26 @@ namespace Shop.ViewModels
         {
             var a = obj as ProductWithList;
 
-            if (!_favoriteList.Any(s => s == a.Id))
+            if (_stateNethwork)
             {
-                _favoriteList.Add(a.Id);
-
-                _settingsManager.IsCircleFavorit = true;
-                IsCircleFavorit = true;
-
-                var s = _login.FavoriteList.Trim();
-                _login.FavoriteList = s + " " + a.Id.ToString();
-
-                if (!await _auth.UpdateAsync(_login))
+                if (!_favoriteList.Any(s => s == a.Id))
                 {
-                    _printMessage.ViewMessage(Resources.Strings.Resource.SaveError);
+                    _favoriteList.Add(a.Id);
+
+                    _settingsManager.IsCircleFavorit = true;
+                    IsCircleFavorit = true;
+
+                    var s = _login.FavoriteList.Trim();
+                    _login.FavoriteList = s + " " + a.Id.ToString();
+
+                    if (!await _auth.UpdateAsync(_login))
+                    {
+                        _printMessage.ViewMessage(Resources.Strings.Resource.SaveError);
+                    }
+                    else
+                    {
+                        _printMessage.ViewMessage(Resources.Strings.Resource.SaveToFavorite, "#228B22");
+                    }
                 }
                 else
                 {
@@ -157,7 +165,7 @@ namespace Shop.ViewModels
             }
             else
             {
-                _printMessage.ViewMessage(Resources.Strings.Resource.SaveToFavorite, "#228B22");
+                _printMessage.ViewMessage(Resources.Strings.Resource.NotServer);
             }
         }
 

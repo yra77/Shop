@@ -146,7 +146,10 @@ internal class MainPageViewModel : BaseViewModel, INavigatedAware
 
     private void Sign_Google()
     {
+        if(_stateNethwork)
+        {
 
+        }
     }
 
     private async void SignInAsync()
@@ -246,7 +249,7 @@ internal class MainPageViewModel : BaseViewModel, INavigatedAware
 
     private bool IsSignInEnable()//Enable disable "Sign in" Button
     {
-        IsEnabled = (!_isPressed
+        IsEnabled = (!_isPressed && _stateNethwork
             && PassBorderColor == Color.Parse("White")
             && EmailBorderColor == Color.Parse("White")
                 && _email.Length > 0
@@ -268,7 +271,10 @@ internal class MainPageViewModel : BaseViewModel, INavigatedAware
     private async void ToSignUpAsync(string param)
     {
         Unfocused_Entry();
-        await _navigationService.NavigateAsync(param);
+        if (_stateNethwork)
+        {
+            await _navigationService.NavigateAsync(param);
+        }
     }
 
     private void Unfocused_Entry()
@@ -294,6 +300,25 @@ internal class MainPageViewModel : BaseViewModel, INavigatedAware
         }
     }
 
+    protected override void IsNethwork(bool state)
+    {
+        _stateNethwork = state;
+        
+        if (_stateNethwork)
+        {
+            _ = Task.Run(async () =>
+            {
+                if (_staticList == null || _staticList.Count == 0)
+                {
+                    var temp = await _products.GetProductsAsync();
+                    _staticList = new ObservableCollection<ProductWithList>(ToProductWithLists.ConvertToProductWithLists(temp));
+                }
+            });
+        }
+
+        IsSignInEnable();
+    }
+
     public void OnNavigatedFrom(INavigationParameters parameters)
     {
         _isPressed = false;
@@ -305,18 +330,6 @@ internal class MainPageViewModel : BaseViewModel, INavigatedAware
         await Task.Delay(250);
 
         await _checkAndroid.CheckServices(_changeNethwork);
-
-        if (_stateNethwork)
-        {
-            _ = Task.Run(async () =>
-            {
-                   if (_staticList == null || _staticList.Count == 0)
-                   {
-                        var temp = await _products.GetProductsAsync();
-                        _staticList = new ObservableCollection<ProductWithList>(ToProductWithLists.ConvertToProductWithLists(temp));
-                   }
-            });
-        }
 
         if (_settingsManager.Email != null
             && _settingsManager.Password != null)

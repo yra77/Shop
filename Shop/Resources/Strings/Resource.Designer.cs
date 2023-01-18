@@ -394,6 +394,15 @@ namespace Shop.Resources.Strings {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Server is not available.
+        /// </summary>
+        internal static string NotServer {
+            get {
+                return ResourceManager.GetString("NotServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Are you offline. Turn on internet access.
         /// </summary>
         internal static string Offline {

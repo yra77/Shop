@@ -1,12 +1,13 @@
 ﻿
 
-using Shop.Converters;
 using Shop.Models;
+using Shop.Converters;
 using Shop.Services.Auth;
 using Shop.Services.Interfaces;
 using Shop.Services.SettingsManager;
 using Shop.Services.VerifyService;
 
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 
 
@@ -163,7 +164,10 @@ namespace Shop.ViewModels
 
         private void Sign_Google()
         {
+            if (_stateNethwork)
+            {
 
+            }
         }
 
         private async void SignInAsync()
@@ -313,7 +317,7 @@ namespace Shop.ViewModels
         private bool IsLogInEnable()//Enable disable "Sign in" Button
         {
 
-            IsEnabled = (!_isPressed
+            IsEnabled = (!_isPressed && _stateNethwork
                 && PassBorderColor == Color.Parse("White")
                 && EmailBorderColor == Color.Parse("White")
                 && NameBorderColor == Color.Parse("White")
@@ -346,6 +350,25 @@ namespace Shop.ViewModels
         }
 
 
+        protected override void IsNethwork(bool state)
+        {
+            _stateNethwork = state;
+
+            if (_stateNethwork)
+            {
+                if (_staticList == null || _staticList.Count == 0)
+                {
+                    _ = Task.Run(async () =>
+                    {
+                       var temp = await _products.GetProductsAsync();
+                       _staticList = new ObservableCollection<ProductWithList>(ToProductWithLists.ConvertToProductWithLists(temp));
+                    });
+                }
+            }
+
+            IsLogInEnable();
+        }
+
         protected override void OnPropertyChanged(PropertyChangedEventArgs args)
         {
             base.OnPropertyChanged(args);
@@ -375,7 +398,7 @@ namespace Shop.ViewModels
 
         public void OnNavigatedTo(INavigationParameters parameters)
         {
-           
+
         }
     }
 }

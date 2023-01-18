@@ -1,8 +1,9 @@
 ﻿
 
 using Shop.Models;
-using Shop.Services.Repository;
+using Shop.Services.HttpService;
 using Shop.Services.SettingsManager;
+
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
@@ -13,16 +14,16 @@ namespace Shop.Services.SendEmail
     internal class SendEmail : ISendEmail
     {
 
-        private readonly IRepository _repository;
+        private readonly IRestService _restService;
         private readonly ISettingsManager _settingsManager;
         private readonly INavigationService _navigationService;
 
 
-        public SendEmail(IRepository repository,
-                         ISettingsManager settingsManager,
+        public SendEmail(ISettingsManager settingsManager,
+                         IRestService restService,
                          INavigationService navigationService)
         {
-            _repository = repository;
+            _restService = restService;
             _settingsManager = settingsManager;
             _navigationService = navigationService;
         }
@@ -63,9 +64,9 @@ namespace Shop.Services.SendEmail
 
         private async Task<string> PasswordFromDb(string email)
         {
-            List<Login> res = await _repository.GetDataAsync<Login>("Login","Email", email);
+           Login res = await _restService.GetDataAsync<Login>("Email", email);
 
-            return res[0].Password;
+            return res.Password;
         }
 
     }

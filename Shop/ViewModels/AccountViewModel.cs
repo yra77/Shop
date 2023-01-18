@@ -1,11 +1,13 @@
 ﻿
 
 using Shop.Services.Auth;
-using Shop.Services.Db_Products;
 using Shop.Services.Interfaces;
-using Shop.Services.SettingsManager;
+using Shop.Services.Db_Products;
 using Shop.Services.VerifyService;
+using Shop.Services.SettingsManager;
+
 using System.ComponentModel;
+
 
 namespace Shop.ViewModels
 {
@@ -30,7 +32,6 @@ namespace Shop.ViewModels
             _verifyInput = verifyInput;
             _products = products;
             _auth = auth;
-
         }
 
 

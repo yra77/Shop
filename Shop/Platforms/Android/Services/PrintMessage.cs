@@ -14,10 +14,14 @@ namespace Shop.Platforms.Android.Services
     {
         public void ViewMessage(string msg, string color = "#DC143C")
         {
-            Toast toast = Toast.MakeText(MainActivity.Inst, msg, ToastLength.Long);
-            toast.View.Background.SetColorFilter(android.Graphics.Color.ParseColor(color), PorterDuff.Mode.SrcIn);
-            toast.SetGravity(GravityFlags.Center, 0, 0);
-            toast.Show();
+
+            MainActivity.Inst.RunOnUiThread(() =>
+            {
+                Toast toast = Toast.MakeText(MainActivity.Inst, msg, ToastLength.Long);
+                toast.View.Background.SetColorFilter(android.Graphics.Color.ParseColor(color), PorterDuff.Mode.SrcIn);
+                toast.SetGravity(GravityFlags.Center, 0, 0);
+                toast.Show();
+            });
         }
     }
 }

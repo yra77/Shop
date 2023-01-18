@@ -1,7 +1,6 @@
 ﻿
 
 using Shop.Models;
-using Shop.Converters;
 using Shop.Services.Auth;
 using Shop.Services.Db_Cart;
 using Shop.Services.Interfaces;
@@ -93,7 +92,7 @@ namespace Shop.ViewModels
 
         private async void ChoiseItem_ClickAsync(object obj)
         {
-            if (!_isPressed)
+            if (!_isPressed && _stateNethwork)
             {
                 _isPressed = true;
 
@@ -159,14 +158,21 @@ namespace Shop.ViewModels
 
         private void Delete(object obj)
         {
-            for (int i = 0; i < BuyList.Count; i++)
+            if (_stateNethwork)
             {
-                if (BuyList[i].Id == (int)obj)
+                for (int i = 0; i < BuyList.Count; i++)
                 {
-                    _carts.DeleteProductAsync(BuyList[i].Id);
-                    BuyList.RemoveAt(i);
-                    break;
+                    if (BuyList[i].Id == (int)obj)
+                    {
+                        _carts.DeleteProductAsync(BuyList[i].Id);
+                        BuyList.RemoveAt(i);
+                        break;
+                    }
                 }
+            }
+            else
+            {
+                _printMessage.ViewMessage(Resources.Strings.Resource.NotServer);
             }
 
             Total_Sum();
@@ -175,7 +181,7 @@ namespace Shop.ViewModels
 
         private bool IsApplyEnable()//Enable disable "Apply" Button
         {
-            IsEnabled = (!_isPressed
+            IsEnabled = (!_isPressed && _stateNethwork
                         && BuyList != null
                         && BuyList.Count > 0
                         && TotalSum != null
@@ -201,31 +207,38 @@ namespace Shop.ViewModels
 
         private async Task ConvertToCartWithProductAsync()
         {
-            var cart = await _carts.GetListAsync();
-          
-            int sum = 0;
-
-            for (int i = 0; i < cart.Count; i++)
+            if (_stateNethwork)
             {
-                var product = _staticList.FirstOrDefault(s => s.Id == cart[i].ProductId);
+                var cart = await _carts.GetListAsync();
 
-                if (product != null)
+                int sum = 0;
+
+                for (int i = 0; i < cart.Count; i++)
                 {
+                    var product = _staticList.FirstOrDefault(s => s.Id == cart[i].ProductId);
 
-                    BuyList.Add(new CartWithProduct()
+                    if (product != null)
                     {
-                        BuyCount = cart[i].BuyCount,
-                        Id = cart[i].Id,
-                        Color = Color.Parse(cart[i].Color),
-                        Date = cart[i].Date,
-                        Email = cart[i].Email,
-                        Product = product,
-                        Size = cart[i].Size,
-                        Status = cart[i].Status
-                    });
-                    sum += product.Price * cart[i].BuyCount;
 
+                        BuyList.Add(new CartWithProduct()
+                        {
+                            BuyCount = cart[i].BuyCount,
+                            Id = cart[i].Id,
+                            Color = Color.Parse(cart[i].Color),
+                            Date = cart[i].Date,
+                            Email = cart[i].Email,
+                            Product = product,
+                            Size = cart[i].Size,
+                            Status = cart[i].Status
+                        });
+                        sum += product.Price * cart[i].BuyCount;
+
+                    }
                 }
+            }
+            else
+            {
+                _printMessage.ViewMessage(Resources.Strings.Resource.NotServer);
             }
         }
 

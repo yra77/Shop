@@ -1,14 +1,13 @@
 ﻿
 
-using Shop.Models;
-using Shop.Converters;
+using Shop.Helpers;
 using Shop.Services.Auth;
 using Shop.Services.Interfaces;
 using Shop.Services.SettingsManager;
 using Shop.Services.VerifyService;
 
 using System.ComponentModel;
-using Shop.Helpers;
+
 
 namespace Shop.ViewModels
 {
@@ -181,18 +180,19 @@ namespace Shop.ViewModels
                 IsConfirmEnable();
                 IsVisibleIndicator = true;
 
-                Login log = new Login();
-                log.Name = _name;
-                log.Email = _email;
-                log.Password = Password;
-                log.CartStatus = 0;
-                log.FavoriteList = "";
-                log.Address = "Address";
-                log.Tel = "+0000000000";
-                log.ImageAccount = PhotoPath;//ImageToByteArray.ToByteArr("editphoto.png");
-                log.DateCreated = DateTime.Now;
+                _login.Name = Name;
+                _login.Email = Email;
+                _login.Password = Password;
+                _login.ImageAccount = PhotoPath;
+
+
+                Input_ErrorColor();
+                _settingsManager.Name = Name;
+                _settingsManager.Email = Email;
+                _settingsManager.Password = Password;
 
                 IsVisibleIndicator = false;
+
 
                 if (!await _auth.UpdateAsync(_login))
                 {
@@ -200,14 +200,10 @@ namespace Shop.ViewModels
                 }
                 else
                 {
-                    Input_ErrorColor();
-                    _login = log;
-                    _settingsManager.Name = Name;
-                    _settingsManager.Email = Email;
-                    _settingsManager.Password = Password;
-
                     GoBackAsync();
                 }
+
+                IsVisibleIndicator = false;
             }
             else
             {
@@ -327,7 +323,7 @@ namespace Shop.ViewModels
         private bool IsConfirmEnable()//Enable disable "Sign in" Button
         {
 
-            IsEnabled = (!_isPressed
+            IsEnabled = (!_isPressed && _stateNethwork
                 && PassBorderColor == Color.Parse("White")
                 && EmailBorderColor == Color.Parse("White")
                 && NameBorderColor == Color.Parse("White")
@@ -389,6 +385,7 @@ namespace Shop.ViewModels
 
         public void OnNavigatedTo(INavigationParameters parameters)
         {
+            IsVisibleIndicator = false;
             _isPressed = false;
             PhotoPath = _login.ImageAccount;
             Name = _login.Name;

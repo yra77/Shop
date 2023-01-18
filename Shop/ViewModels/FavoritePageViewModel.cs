@@ -1,11 +1,13 @@
 ﻿
 
+using Shop.Models;
+using Shop.Services.Auth;
 using Shop.Services.Interfaces;
 using Shop.Services.Db_Products;
 using Shop.Services.SettingsManager;
-using Shop.Models;
+
 using System.Collections.ObjectModel;
-using Shop.Services.Auth;
+
 
 namespace Shop.ViewModels
 {
@@ -63,37 +65,44 @@ namespace Shop.ViewModels
         {
             var item = obj as ProductWithList;
 
-            string ids = "";
-
-            for (int i = 0; i < FavoriteList.Count; i++)
+            if (_stateNethwork)
             {
-                if (FavoriteList[i].Id == item.Id)
+                string ids = "";
+
+                for (int i = 0; i < FavoriteList.Count; i++)
                 {
-                    _favoriteList.RemoveAt(i);
-                    FavoriteList.RemoveAt(i);
+                    if (FavoriteList[i].Id == item.Id)
+                    {
+                        _favoriteList.RemoveAt(i);
+                        FavoriteList.RemoveAt(i);
+                    }
+                    else
+                    {
+                        ids += _favoriteList[i].ToString() + " ";
+                    }
+                }
+
+                ids = ids.Trim();
+                _login.FavoriteList = ids;
+
+                if (FavoriteList == null || FavoriteList.Count == 0)
+                {
+                    _settingsManager.IsCircleFavorit = false;
+                    IsCircleFavorit = false;
+                }
+
+                if (!await _auth.UpdateAsync(_login))
+                {
+                    _printMessage.ViewMessage(Resources.Strings.Resource.SaveError);
                 }
                 else
                 {
-                    ids += _favoriteList[i].ToString() + " ";
+                    _printMessage.ViewMessage(Resources.Strings.Resource.DeleteFavorite, "#228B22");
                 }
-            }
-
-            ids = ids.Trim();
-            _login.FavoriteList = ids;
-
-            if(FavoriteList == null || FavoriteList.Count == 0)
-            {
-                _settingsManager.IsCircleFavorit = false;
-                IsCircleFavorit = false;
-            }
-
-            if (!await _auth.UpdateAsync(_login))
-            {
-                _printMessage.ViewMessage(Resources.Strings.Resource.SaveError);
             }
             else
             {
-                _printMessage.ViewMessage(Resources.Strings.Resource.DeleteFavorite, "#228B22");
+                _printMessage.ViewMessage(Resources.Strings.Resource.NotServer);
             }
         }
 

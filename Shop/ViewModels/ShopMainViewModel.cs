@@ -164,35 +164,43 @@ namespace Shop.ViewModels
         {
             var a = obj as ProductWithList;
 
-            if (!_favoriteList.Any(s => s == a.Id))
+            if (_stateNethwork)
             {
-
-                _favoriteList.Add(a.Id);
-                _settingsManager.IsCircleFavorit = true;
-                IsCircleFavorit = true;
-
-                var s = _login.FavoriteList.Trim();
-                if (s.Length > 0)
+                if (!_favoriteList.Any(s => s == a.Id))
                 {
-                    _login.FavoriteList = s + " " + a.Id.ToString();
+
+                    _favoriteList.Add(a.Id);
+                    _settingsManager.IsCircleFavorit = true;
+                    IsCircleFavorit = true;
+
+                    var s = _login.FavoriteList.Trim();
+
+                    if (s.Length > 0)
+                    {
+                        _login.FavoriteList = s + " " + a.Id.ToString();
+                    }
+                    else
+                    {
+                        _login.FavoriteList = a.Id.ToString();
+                    }
+
+                    if (!await _auth.UpdateAsync(_login))
+                    {
+                        _printMessage.ViewMessage(Resources.Strings.Resource.SaveError);
+                    }
+                    else
+                    {
+                        _printMessage.ViewMessage(Resources.Strings.Resource.SaveToFavorite, "#228B22");
+                    }
                 }
                 else
-                {
-                    _login.FavoriteList = a.Id.ToString();
-                }
-
-                if (!await _auth.UpdateAsync(_login))
-                {
-                    _printMessage.ViewMessage(Resources.Strings.Resource.SaveError);
-                }
-                else
-                {
+                {//если уже есть в списке просто сообщаем Ок
                     _printMessage.ViewMessage(Resources.Strings.Resource.SaveToFavorite, "#228B22");
                 }
             }
             else
             {
-                _printMessage.ViewMessage(Resources.Strings.Resource.SaveToFavorite, "#228B22");
+                _printMessage.ViewMessage(Resources.Strings.Resource.NotServer);
             }
         }
 
@@ -327,8 +335,10 @@ namespace Shop.ViewModels
 
                 foreach (var item in arr)
                 {
-                    if(item != null && item != "")
-                    _favoriteList.Add(Int16.Parse(item));
+                    if (item != null && item != "")
+                    {
+                        _favoriteList.Add(Int16.Parse(item));
+                    }
                 }
             }
         }
@@ -343,14 +353,11 @@ namespace Shop.ViewModels
         public async void OnNavigatedTo(INavigationParameters parameters)
         {
 
-            // _ = Task.Run(() =>
-            // {
             if (!_isOpen)
             {
                 _isOpen = true;
                 GetProductsAsync();
             }
-            // });
 
             _isMenuOpen = false;
             _changeTheme.SetTheme(Enums.ThemeEnum.Light);
@@ -377,7 +384,6 @@ namespace Shop.ViewModels
             }
 
             CreateFavorite();
-
         }
     }
 }

@@ -87,7 +87,7 @@ namespace Shop.ViewModels
 
         private void Color_Click(Color color)
         {
-                _color = ColorToString.Convert(color);        
+            _color = ColorToString.Convert(color);        
         }
 
         private async void AddToCart_ClickAsync()

@@ -39,6 +39,7 @@ namespace Shop.Services.HttpService
             catch(Exception e)
             {
                 Console.WriteLine("Error delete http - " + e.Message);
+                throw new Exception("Server Connsction Error");
             }
 
             return false;
@@ -115,6 +116,7 @@ namespace Shop.Services.HttpService
             catch (Exception ex)
             {
                 Console.WriteLine(@"ERROR {0}", ex.Message);
+                throw new Exception("Server Connection Error");
             }
             
             return login;
@@ -137,6 +139,7 @@ namespace Shop.Services.HttpService
             catch (Exception e)
             {
                 Console.WriteLine("Error Insert http - " + e.Message);
+                throw new Exception("Server Connection Error");
             }
 
             return false;
@@ -159,6 +162,7 @@ namespace Shop.Services.HttpService
             catch (Exception e)
             {
                 Console.WriteLine("Error Insert http - " + e.Message);
+                throw new Exception("Server Connection Error");
             }
 
             return false;

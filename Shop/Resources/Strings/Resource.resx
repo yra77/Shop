@@ -228,6 +228,9 @@
   <data name="New" xml:space="preserve">
     <value>New Arrivals</value>
   </data>
+  <data name="NotServer" xml:space="preserve">
+    <value>Server is not available</value>
+  </data>
   <data name="Offline" xml:space="preserve">
     <value>Are you offline. Turn on internet access</value>
   </data>
